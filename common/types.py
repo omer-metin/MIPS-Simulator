@@ -182,8 +182,10 @@ class _Instruction(object):
     # PUBLIC METHODS #
     def toMachineCode(self) -> str:
         res = ""
-        for fraction in self.fractions.values():
-            res += bin(fraction)[2:]
+        for i, fraction in enumerate(self.fractions.values()):
+            fraction_bits = bin(fraction)[2:]
+            res += '0' * \
+                (self.field_bit_lengths[i]-len(fraction_bits)) + fraction_bits
         return res
 
     # PRIVATE METHODS #
@@ -192,11 +194,12 @@ class _Instruction(object):
 class R_Type(_Instruction):
 
     # STATIC VARIABLES #
+    field_bit_lengths = [6, 5, 5, 5, 5, 6]
 
     # DUNDERS #
     def __init__(self, **fractions):
-        fracs = {opc: None, rs: None, rt: None, rd: None,
-                 sa: None, fun: None}.update(fractions)
+        fracs = {opc: None, rs: None, rt: None, rd: None, sa: None, fun: None}
+        fracs.update(fractions)
         super().__init__(**fracs)
 
     # PROPERTIES #
@@ -209,10 +212,12 @@ class R_Type(_Instruction):
 class I_Type(_Instruction):
 
     # STATIC VARIABLES #
+    field_bit_lengths = [6, 5, 5, 16]
 
     # DUNDERS #
     def __init__(self, **fractions):
-        fracs = {opc: None, rs: None, rt: None, imm: None}.update(fractions)
+        fracs = {opc: None, rs: None, rt: None, imm: None}
+        fracs.update(fractions)
         super().__init__(**fracs)
 
     # PROPERTIES #
@@ -225,10 +230,12 @@ class I_Type(_Instruction):
 class J_Type(_Instruction):
 
     # STATIC VARIABLES #
+    field_bit_lengths = [6, 26]
 
     # DUNDERS #
     def __init__(self, **fractions):
-        fracs = {opc: None, tgt: None}.update(fractions)
+        fracs = {opc: None, tgt: None}
+        fracs.update(fractions)
         super().__init__(**fracs)
 
     # PROPERTIES #

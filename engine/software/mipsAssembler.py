@@ -20,8 +20,13 @@ class MIPSAssembler(object):
         MIPSAssembler._setRegisterAddresses()
         MIPSAssembler._setImmediates()
         MIPSAssembler._setMemoryLocations()
-        MIPSAssembler._setOpcodes()
-        print(MIPSAssembler._current_instructions)
+        instructions = MIPSAssembler._setOpcodes()
+
+        machine_code = ""
+        for instruction in instructions:
+            machine_code += instruction.toMachineCode()
+
+        return machine_code
 
     # PRIVATE METHODS #
     @staticmethod
@@ -40,18 +45,32 @@ class MIPSAssembler(object):
         return words
 
     @staticmethod
-    def _setOpcodes():
+    def _setOpcodes() -> list:
+        instructions = []
         for instruction in MIPSAssembler._current_instructions:
-            opcode = opcodes[instruction[0]]
+            instruction_key = instruction[0]
+            opcode = opcodes[instruction_key]
             instruction[0] = opcode
+            inst_dict: dict = instruction_machinecode_orders[instruction_key]
             if opcode == 0b000_000:
-                R_Type()
+                inst_dict.update(dict(
+                    zip(instruction_assembly_orders[instruction_key],
+                        instruction)))
+                instructions.append(R_Type(**inst_dict))
             elif (opcode >> 1) == 0b000_01:
-                J_Type()
+                inst_dict.update(dict(
+                    zip(instruction_assembly_orders[instruction_key],
+                        instruction)))
+                instructions.append(J_Type(**inst_dict))
             elif (opcode >> 2) == 0b010_0:
                 continue
             else:
-                I_Type()
+                inst_dict.update(dict(
+                    zip(instruction_assembly_orders[instruction_key],
+                        instruction)))
+                instructions.append(I_Type(**inst_dict))
+
+        return instructions
 
     @staticmethod
     def _setRegisterAddresses():
@@ -79,4 +98,5 @@ class MIPSAssembler(object):
                     offset_part, address_part = word.split('(', 1)
                     address = address_part.strip(')')
                     instruction[i] = Registers.getRegister(
-                        address.strip('$,)')).value + int(offset_part)
+                        address.strip('$,)')).register_id
+                    instruction.append(int(offset_part))
