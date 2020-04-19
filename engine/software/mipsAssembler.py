@@ -22,11 +22,11 @@ class MIPSAssembler(object):
         MIPSAssembler._setMemoryLocations()
         instructions = MIPSAssembler._setOpcodes()
 
-        machine_code = ""
+        machine_codes = []
         for instruction in instructions:
-            machine_code += instruction.toMachineCode()
+            machine_codes.append(instruction.toMachineCode())
 
-        return machine_code
+        return machine_codes
 
     # PRIVATE METHODS #
     @staticmethod
