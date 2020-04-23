@@ -139,6 +139,8 @@ class BitString(object):
             self._string: np.ndarray = np.zeros(
                 (self._length,), dtype=np.uint8)
         else:
+            if value < 0:
+                value = 2**self._length + value
             bin_str = bin(value)[2:]
             self._string: np.ndarray = np.array(
                 list('0'*(self._length-len(bin_str)) + bin_str), dtype=np.uint8)
