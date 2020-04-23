@@ -17,9 +17,12 @@ class MIPSAssembler(object):
     def assembly(source: str) -> str:
         MIPSAssembler._current_instructions = MIPSAssembler._word_parser(
             source)
-        MIPSAssembler._setRegisterAddresses()
+        MIPSAssembler._setRegister()
         MIPSAssembler._setImmediates()
         MIPSAssembler._setMemoryLocations()
+        # FIXME: return before setting opcodes for this state of project
+        return MIPSAssembler._current_instructions[:]
+
         instructions = MIPSAssembler._setOpcodes()
 
         machine_codes = []
@@ -73,13 +76,13 @@ class MIPSAssembler(object):
         return instructions
 
     @staticmethod
-    def _setRegisterAddresses():
+    def _setRegister():
         for instruction in MIPSAssembler._current_instructions:
             for i, word in enumerate(instruction):
                 if isinstance(word, str) and word.startswith('$'):
                     try:
                         instruction[i] = Registers.getRegister(
-                            word.strip('$,')).register_id
+                            word.strip('$,'))
                     except Exception as e:
                         raise e
 
@@ -87,8 +90,11 @@ class MIPSAssembler(object):
     def _setImmediates():
         for instruction in MIPSAssembler._current_instructions:
             for i, word in enumerate(instruction):
-                if isinstance(word, str) and word.isnumeric():
-                    instruction[i] = int(word)
+                if isinstance(word, str):
+                    try:
+                        instruction[i] = int(word)
+                    except ValueError as e:
+                        pass
 
     @staticmethod
     def _setMemoryLocations():
@@ -98,5 +104,5 @@ class MIPSAssembler(object):
                     offset_part, address_part = word.split('(', 1)
                     address = address_part.strip(')')
                     instruction[i] = Registers.getRegister(
-                        address.strip('$,)')).register_id
+                        address.strip('$,)'))
                     instruction.append(int(offset_part))

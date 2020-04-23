@@ -1,121 +1,121 @@
 # R Types #
-_add = 'add'
-_addu = 'addu'
-_and = 'and'
-_break = 'break'
-_div = 'div'
-_divu = 'divu'
-_jalr = 'jalr'
-_jr = 'jr'
-_mfhi = 'mfhi'
-_mflo = 'mflo'
-_mthi = 'mthi'
-_mtlo = 'mtlo'
-_mult = 'mult'
-_multu = 'multu'
-_nor = 'nor'
-_or = 'or'
-_sll = 'sll'
-_sllv = 'sllv'
-_slt = 'slt'
-_sltu = 'sltu'
-_sra = 'sra'
-_srav = 'srav'
-_srl = 'srl'
-_srlv = 'srlv'
-_sub = 'sub'
-_subu = 'subu'
-_syscall = 'syscall'
-_xor = 'xor'
+add_ = 'add'
+addu_ = 'addu'
+and_ = 'and'
+break_ = 'break'
+div_ = 'div'
+divu_ = 'divu'
+jalr_ = 'jalr'
+jr_ = 'jr'
+mfhi_ = 'mfhi'
+mflo_ = 'mflo'
+mthi_ = 'mthi'
+mtlo_ = 'mtlo'
+mult_ = 'mult'
+multu_ = 'multu'
+nor_ = 'nor'
+or_ = 'or'
+sll_ = 'sll'
+sllv_ = 'sllv'
+slt_ = 'slt'
+sltu_ = 'sltu'
+sra_ = 'sra'
+srav_ = 'srav'
+srl_ = 'srl'
+srlv_ = 'srlv'
+sub_ = 'sub'
+subu_ = 'subu'
+syscall_ = 'syscall'
+xor_ = 'xor'
 
 # I Types #
-_addi = 'addi'
-_addiu = 'addiu'
-_andi = 'andi'
-_beq = 'beq'
-_bgez = 'bgez'
-_bgtz = 'bgtz'
-_blez = 'blez'
-_bltz = 'bltz'
-_bne = 'bne'
-_lb = 'lb'
-_lbu = 'lbu'
-_lh = 'lh'
-_lhu = 'lhu'
-_lui = 'lui'
-_lw = 'lw'
-_lwc1 = 'lwc1'
-_ori = 'ori'
-_sb = 'sb'
-_slti = 'slti'
-_sltiu = 'sltiu'
-_sh = 'sh'
-_sw = 'sw'
-_swc1 = 'swc1'
-_xori = 'xori'
+addi_ = 'addi'
+addiu_ = 'addiu'
+andi_ = 'andi'
+beq_ = 'beq'
+bgez_ = 'bgez'
+bgtz_ = 'bgtz'
+blez_ = 'blez'
+bltz_ = 'bltz'
+bne_ = 'bne'
+lb_ = 'lb'
+lbu_ = 'lbu'
+lh_ = 'lh'
+lhu_ = 'lhu'
+lui_ = 'lui'
+lw_ = 'lw'
+lwc1_ = 'lwc1'
+ori_ = 'ori'
+sb_ = 'sb'
+slti_ = 'slti'
+sltiu_ = 'sltiu'
+sh_ = 'sh'
+sw_ = 'sw'
+swc1_ = 'swc1'
+xori_ = 'xori'
 
 # J Types #
-_j = 'j'
-_jal = 'jal'
+j_ = 'j'
+jal_ = 'jal'
 
 opcodes = dict([
     # R Types #
-    (_add,      0b000_000),
-    (_addu,     0b000_000),
-    (_and,      0b000_000),
-    (_break,    0b000_000),
-    (_div,      0b000_000),
-    (_divu,     0b000_000),
-    (_jalr,     0b000_000),
-    (_jr,       0b000_000),
-    (_mfhi,     0b000_000),
-    (_mflo,     0b000_000),
-    (_mthi,     0b000_000),
-    (_mtlo,     0b000_000),
-    (_mult,     0b000_000),
-    (_multu,    0b000_000),
-    (_nor,      0b000_000),
-    (_or,       0b000_000),
-    (_sll,      0b000_000),
-    (_sllv,     0b000_000),
-    (_slt,      0b000_000),
-    (_sltu,     0b000_000),
-    (_sra,      0b000_000),
-    (_srav,     0b000_000),
-    (_srl,      0b000_000),
-    (_srlv,     0b000_000),
-    (_sub,      0b000_000),
-    (_subu,     0b000_000),
-    (_syscall,  0b000_000),
-    (_xor,      0b000_000),
+    (add_,      0b000_000),
+    (addu_,     0b000_000),
+    (and_,      0b000_000),
+    (break_,    0b000_000),
+    (div_,      0b000_000),
+    (divu_,     0b000_000),
+    (jalr_,     0b000_000),
+    (jr_,       0b000_000),
+    (mfhi_,     0b000_000),
+    (mflo_,     0b000_000),
+    (mthi_,     0b000_000),
+    (mtlo_,     0b000_000),
+    (mult_,     0b000_000),
+    (multu_,    0b000_000),
+    (nor_,      0b000_000),
+    (or_,       0b000_000),
+    (sll_,      0b000_000),
+    (sllv_,     0b000_000),
+    (slt_,      0b000_000),
+    (sltu_,     0b000_000),
+    (sra_,      0b000_000),
+    (srav_,     0b000_000),
+    (srl_,      0b000_000),
+    (srlv_,     0b000_000),
+    (sub_,      0b000_000),
+    (subu_,     0b000_000),
+    (syscall_,  0b000_000),
+    (xor_,      0b000_000),
     # I Types #
-    (_addi,     0b001_000),
-    (_addiu,    0b001_001),
-    (_andi,     0b001_100),
-    (_beq,      0b000_100),
-    (_bgez,     0b000_001),
-    (_bgtz,     0b000_111),
-    (_blez,     0b000_110),
-    (_bltz,     0b000_001),
-    (_bne,      0b000_101),
-    (_lb,       0b100_000),
-    (_lbu,      0b100_100),
-    (_lh,       0b100_001),
-    (_lhu,      0b100_101),
-    (_lui,      0b001_111),
-    (_lw,       0b100_011),
-    (_lwc1,     0b110_001),
-    (_ori,      0b001_101),
-    (_sb,       0b101_000),
-    (_slti,     0b001_010),
-    (_sltiu,    0b001_011),
-    (_sh,       0b101_001),
-    (_sw,       0b101_011),
-    (_swc1,     0b111_001),
-    (_xori,     0b001_110),
+    (addi_,     0b001_000),
+    (addiu_,    0b001_001),
+    (andi_,     0b001_100),
+    (beq_,      0b000_100),
+    (bgez_,     0b000_001),
+    (bgtz_,     0b000_111),
+    (blez_,     0b000_110),
+    (bltz_,     0b000_001),
+    (bne_,      0b000_101),
+    (lb_,       0b100_000),
+    (lbu_,      0b100_100),
+    (lh_,       0b100_001),
+    (lhu_,      0b100_101),
+    (lui_,      0b001_111),
+    (lw_,       0b100_011),
+    (lwc1_,     0b110_001),
+    (ori_,      0b001_101),
+    (sb_,       0b101_000),
+    (slti_,     0b001_010),
+    (sltiu_,    0b001_011),
+    (sh_,       0b101_001),
+    (sw_,       0b101_011),
+    (swc1_,     0b111_001),
+    (xori_,     0b001_110),
     # J Types #
-    (_j,        0b000_010),
-    (_jal,      0b000_011)
+    (j_,        0b000_010),
+    (jal_,      0b000_011)
 ])
 
 
@@ -129,119 +129,119 @@ fun = 'funct'
 opc = 'opcode'
 
 instruction_machinecode_orders = dict([
-    (_add,      {opc: 0b000_000, sa: 0, fun: 0b100_000}),
-    (_addu,     {opc: 0b000_000, sa: 0, fun: 0b100_001}),
-    (_and,      {opc: 0b000_000, sa: 0, fun: 0b100_100}),
-    (_break,    {opc: 0b000_000, rd: 0, rs: 0, rt: 0, sa: 0, fun: 0b001_101}),
-    (_div,      {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_010}),
-    (_divu,     {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_011}),
-    (_jalr,     {opc: 0b000_000, rt: 0, sa: 0, fun: 0b001_001}),
-    (_jr,       {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b001_000}),
-    (_mfhi,     {opc: 0b000_000, rs: 0, rt: 0, sa: 0, fun: 0b010_000}),
-    (_mflo,     {opc: 0b000_000, rs: 0, rt: 0, sa: 0, fun: 0b010_010}),
-    (_mthi,     {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b010_001}),
-    (_mtlo,     {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b010_011}),
-    (_mult,     {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_000}),
-    (_multu,    {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_001}),
-    (_nor,      {opc: 0b000_000, sa: 0, fun: 0b100_111}),
-    (_or,       {opc: 0b000_000, sa: 0, fun: 0b100_101}),
-    (_sll,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
-    (_sllv,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
-    (_slt,      {opc: 0b000_000, sa: 0, fun: 0b101_010}),
-    (_sltu,     {opc: 0b000_000, sa: 0, fun: 0b101_011}),
-    (_sra,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
-    (_srav,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
-    (_srl,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
-    (_srlv,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
-    (_sub,      {opc: 0b000_000, sa: 0, fun: 0b100_010}),
-    (_subu,     {opc: 0b000_000, sa: 0, fun: 0b100_011}),
-    (_syscall,  {opc: 0b000_000, rd: 0, rs: 0, rt: 0, sa: 0, fun: 0b001_100}),
-    (_xor,      {opc: 0b000_000, sa: 0, fun: 0b10_0110}),
+    (add_,      {opc: 0b000_000, sa: 0, fun: 0b100_000}),
+    (addu_,     {opc: 0b000_000, sa: 0, fun: 0b100_001}),
+    (and_,      {opc: 0b000_000, sa: 0, fun: 0b100_100}),
+    (break_,    {opc: 0b000_000, rd: 0, rs: 0, rt: 0, sa: 0, fun: 0b001_101}),
+    (div_,      {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_010}),
+    (divu_,     {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_011}),
+    (jalr_,     {opc: 0b000_000, rt: 0, sa: 0, fun: 0b001_001}),
+    (jr_,       {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b001_000}),
+    (mfhi_,     {opc: 0b000_000, rs: 0, rt: 0, sa: 0, fun: 0b010_000}),
+    (mflo_,     {opc: 0b000_000, rs: 0, rt: 0, sa: 0, fun: 0b010_010}),
+    (mthi_,     {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b010_001}),
+    (mtlo_,     {opc: 0b000_000, rd: 0, rt: 0, sa: 0, fun: 0b010_011}),
+    (mult_,     {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_000}),
+    (multu_,    {opc: 0b000_000, rd: 0, sa: 0, fun: 0b011_001}),
+    (nor_,      {opc: 0b000_000, sa: 0, fun: 0b100_111}),
+    (or_,       {opc: 0b000_000, sa: 0, fun: 0b100_101}),
+    (sll_,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
+    (sllv_,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
+    (slt_,      {opc: 0b000_000, sa: 0, fun: 0b101_010}),
+    (sltu_,     {opc: 0b000_000, sa: 0, fun: 0b101_011}),
+    (sra_,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
+    (srav_,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
+    (srl_,      {opc: 0b000_000, rs: 0, fun: 0b011_000}),
+    (srlv_,     {opc: 0b000_000, sa: 0, fun: 0b011_000}),
+    (sub_,      {opc: 0b000_000, sa: 0, fun: 0b100_010}),
+    (subu_,     {opc: 0b000_000, sa: 0, fun: 0b100_011}),
+    (syscall_,  {opc: 0b000_000, rd: 0, rs: 0, rt: 0, sa: 0, fun: 0b001_100}),
+    (xor_,      {opc: 0b000_000, sa: 0, fun: 0b10_0110}),
 
-    (_addi,     {opc: 0b001_000}),
-    (_addiu,    {opc: 0b001_001}),
-    (_andi,     {opc: 0b001_100}),
-    (_beq,      {opc: 0b000_100}),
-    (_bgez,     {opc: 0b000_001, rt: 0}),
-    (_bgtz,     {opc: 0b000_111, rt: 0}),
-    (_blez,     {opc: 0b000_110, rt: 0}),
-    (_bltz,     {opc: 0b000_001, rt: 0}),
-    (_bne,      {opc: 0b000_101}),
-    (_lb,       {opc: 0b100_000}),
-    (_lbu,      {opc: 0b100_100}),
-    (_lh,       {opc: 0b100_001}),
-    (_lhu,      {opc: 0b100_101}),
-    (_lui,      {opc: 0b001_111}),
-    (_lw,       {opc: 0b100_011}),
-    (_lwc1,     {opc: 0b110_001}),
-    (_ori,      {opc: 0b001_101}),
-    (_sb,       {opc: 0b101_000, rs: 0}),
-    (_slti,     {opc: 0b001_010}),
-    (_sltiu,    {opc: 0b001_011}),
-    (_sh,       {opc: 0b101_001, rs: 0}),
-    (_sw,       {opc: 0b101_011, rs: 0}),
-    (_swc1,     {opc: 0b111_001, rs: 0}),
-    (_xori,     {opc: 0b001_110}),
+    (addi_,     {opc: 0b001_000}),
+    (addiu_,    {opc: 0b001_001}),
+    (andi_,     {opc: 0b001_100}),
+    (beq_,      {opc: 0b000_100}),
+    (bgez_,     {opc: 0b000_001, rt: 0}),
+    (bgtz_,     {opc: 0b000_111, rt: 0}),
+    (blez_,     {opc: 0b000_110, rt: 0}),
+    (bltz_,     {opc: 0b000_001, rt: 0}),
+    (bne_,      {opc: 0b000_101}),
+    (lb_,       {opc: 0b100_000}),
+    (lbu_,      {opc: 0b100_100}),
+    (lh_,       {opc: 0b100_001}),
+    (lhu_,      {opc: 0b100_101}),
+    (lui_,      {opc: 0b001_111}),
+    (lw_,       {opc: 0b100_011}),
+    (lwc1_,     {opc: 0b110_001}),
+    (ori_,      {opc: 0b001_101}),
+    (sb_,       {opc: 0b101_000, rs: 0}),
+    (slti_,     {opc: 0b001_010}),
+    (sltiu_,    {opc: 0b001_011}),
+    (sh_,       {opc: 0b101_001, rs: 0}),
+    (sw_,       {opc: 0b101_011, rs: 0}),
+    (swc1_,     {opc: 0b111_001, rs: 0}),
+    (xori_,     {opc: 0b001_110}),
 
-    (_j,        {opc: 0b000_010}),
-    (_jal,      {opc: 0b000_011})
+    (j_,        {opc: 0b000_010}),
+    (jal_,      {opc: 0b000_011})
 ])
 
 instruction_assembly_orders = dict([
-    (_add,      [opc, rd, rs, rt, fun]),
-    (_addu,     [opc, rd, rs, rt, fun]),
-    (_and,      [opc, rd, rs, rt, fun]),
-    (_break,    [opc, fun]),
-    (_div,      [opc, rs, rt, fun, fun]),
-    (_divu,     [opc, rs, rt, fun]),
-    (_jalr,     [opc, rd, rs, fun]),
-    (_jr,       [opc, rs, fun]),
-    (_mfhi,     [opc, rd, fun]),
-    (_mflo,     [opc, rd, fun]),
-    (_mthi,     [opc, rs, fun]),
-    (_mtlo,     [opc, rs, fun]),
-    (_mult,     [opc, rs, rt, fun]),
-    (_multu,    [opc, rs, rt, fun]),
-    (_nor,      [opc, rd, rs, rt, fun]),
-    (_or,       [opc, rd, rs, rt, fun]),
-    (_sll,      [opc, rt, rt, sa, fun]),
-    (_sllv,     [opc, rd, rt, rs, fun]),
-    (_slt,      [opc, rd, rs, rt, fun]),
-    (_sltu,     [opc, rd, rs, rt, fun]),
-    (_sra,      [opc, rd, rt, sa, fun]),
-    (_srav,     [opc, rd, rt, rs, fun]),
-    (_srl,      [opc, rd, rt, sa, fun]),
-    (_srlv,     [opc, rd, rt, rs, fun]),
-    (_sub,      [opc, rd, rs, rt, fun]),
-    (_subu,     [opc, rd, rs, rt, fun]),
-    (_syscall,  [opc, fun]),
-    (_xor,      [opc, rd, rs, rt, fun]),
+    (add_,      [opc, rd, rs, rt, fun]),
+    (addu_,     [opc, rd, rs, rt, fun]),
+    (and_,      [opc, rd, rs, rt, fun]),
+    (break_,    [opc, fun]),
+    (div_,      [opc, rs, rt, fun]),
+    (divu_,     [opc, rs, rt, fun]),
+    (jalr_,     [opc, rd, rs, fun]),
+    (jr_,       [opc, rs, fun]),
+    (mfhi_,     [opc, rd, fun]),
+    (mflo_,     [opc, rd, fun]),
+    (mthi_,     [opc, rs, fun]),
+    (mtlo_,     [opc, rs, fun]),
+    (mult_,     [opc, rs, rt, fun]),
+    (multu_,    [opc, rs, rt, fun]),
+    (nor_,      [opc, rd, rs, rt, fun]),
+    (or_,       [opc, rd, rs, rt, fun]),
+    (sll_,      [opc, rd, rt, sa, fun]),
+    (sllv_,     [opc, rd, rt, rs, fun]),
+    (slt_,      [opc, rd, rs, rt, fun]),
+    (sltu_,     [opc, rd, rs, rt, fun]),
+    (sra_,      [opc, rd, rt, sa, fun]),
+    (srav_,     [opc, rd, rt, rs, fun]),
+    (srl_,      [opc, rd, rt, sa, fun]),
+    (srlv_,     [opc, rd, rt, rs, fun]),
+    (sub_,      [opc, rd, rs, rt, fun]),
+    (subu_,     [opc, rd, rs, rt, fun]),
+    (syscall_,  [opc, fun]),
+    (xor_,      [opc, rd, rs, rt, fun]),
 
-    (_addi,     [opc, rt, rs, imm]),
-    (_addiu,    [opc, rt, rs, imm]),
-    (_andi,     [opc, rt, rs, imm]),
-    (_beq,      [opc, rs, rt, imm]),
-    (_bgez,     [opc, rs, imm]),
-    (_bgtz,     [opc, rs, imm]),
-    (_blez,     [opc, rs, imm]),
-    (_bltz,     [opc, rs, imm]),
-    (_bne,      [opc, rs, rt, imm]),
-    (_lb,       [opc, rt, rs, imm]),
-    (_lbu,      [opc, rt, rs, imm]),
-    (_lh,       [opc, rt, rs, imm]),
-    (_lhu,      [opc, rt, rs, imm]),
-    (_lui,      [opc, rt, rs, imm]),
-    (_lw,       [opc, rt, rs, imm]),
-    (_lwc1,     [opc, rt, rs, imm]),
-    (_ori,      [opc, rt, rs, imm]),
-    (_sb,       [opc, rt, imm]),
-    (_slti,     [opc, rt, rs, imm]),
-    (_sltiu,    [opc, rt, rs, imm]),
-    (_sh,       [opc, rt, imm]),
-    (_sw,       [opc, rt, imm]),
-    (_swc1,     [opc, rt, imm]),
-    (_xori,     [opc, rt, rs, imm]),
+    (addi_,     [opc, rt, rs, imm]),
+    (addiu_,    [opc, rt, rs, imm]),
+    (andi_,     [opc, rt, rs, imm]),
+    (beq_,      [opc, rs, rt, imm]),
+    (bgez_,     [opc, rs, imm]),
+    (bgtz_,     [opc, rs, imm]),
+    (blez_,     [opc, rs, imm]),
+    (bltz_,     [opc, rs, imm]),
+    (bne_,      [opc, rs, rt, imm]),
+    (lb_,       [opc, rt, rs, imm]),
+    (lbu_,      [opc, rt, rs, imm]),
+    (lh_,       [opc, rt, rs, imm]),
+    (lhu_,      [opc, rt, rs, imm]),
+    (lui_,      [opc, rt, imm]),
+    (lw_,       [opc, rt, rs, imm]),
+    (lwc1_,     [opc, rt, rs, imm]),
+    (ori_,      [opc, rt, rs, imm]),
+    (sb_,       [opc, rt, rs, imm]),
+    (slti_,     [opc, rt, rs, imm]),
+    (sltiu_,    [opc, rt, rs, imm]),
+    (sh_,       [opc, rt, rs, imm]),
+    (sw_,       [opc, rt, rs, imm]),
+    (swc1_,     [opc, rt, imm]),
+    (xori_,     [opc, rt, rs, imm]),
 
-    (_j,        [opc, tgt]),
-    (_jal,      [opc, tgt])
+    (j_,        [opc, tgt]),
+    (jal_,      [opc, tgt])
 ])
