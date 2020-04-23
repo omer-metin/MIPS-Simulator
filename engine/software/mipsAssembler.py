@@ -15,11 +15,12 @@ class MIPSAssembler(object):
     # PUBLIC METHODS #
     @staticmethod
     def assembly(source: str) -> str:
-        MIPSAssembler._current_instructions = MIPSAssembler._word_parser(
+        MIPSAssembler._current_instructions = MIPSAssembler._tokenizer(
             source)
         MIPSAssembler._setRegister()
         MIPSAssembler._setImmediates()
         MIPSAssembler._setMemoryLocations()
+
         # FIXME: return before setting opcodes for this state of project
         return MIPSAssembler._current_instructions[:]
 
@@ -33,15 +34,37 @@ class MIPSAssembler(object):
 
     # PRIVATE METHODS #
     @staticmethod
-    def _word_parser(source) -> list:
-        lines = [line.split('#')[0].replace('\t', '')
-                 for line in source.splitlines()]
+    def _tokenizer(source) -> list:
+        lines = []
+        for raw_line in source.splitlines():
+            if len(raw_line.strip()) > 0:
+                line = raw_line.split('#')[0].replace('\t', ' ')
+                if line.find(':') >= 0:
+                    splitted_line = line.split(':')
+                    for block_line in splitted_line[:-1]:
+                        if len(block_line.strip()) > 0:
+                            lines.append(block_line + ':')
+                    if len(splitted_line[-1].strip()) > 0:
+                        lines.append(splitted_line[-1])
+                    continue
+                lines.append(line)
+
+        blocks = {}
+
         words = []
-        for line in lines:
+        for idx, line in enumerate(lines):
+            if line.find(':') >= 0:
+                blocks[line[:-1]] = idx - len(blocks)
+                continue
+
             line_words = []
             for raw_word in line.split():
                 if len(raw_word) > 0:
-                    line_words.append(raw_word)
+                    if raw_word in blocks:
+                        line_words.append(
+                            str((blocks[raw_word] - idx + len(blocks) - 1)*4))
+                    else:
+                        line_words.append(raw_word)
 
             if len(line_words) > 0:
                 words.append(line_words)
@@ -106,3 +129,8 @@ class MIPSAssembler(object):
                     instruction[i] = Registers.getRegister(
                         address.strip('$,)'))
                     instruction.append(int(offset_part))
+
+    # @staticmethod
+    # def _setBranchLocations():
+        # for instruction in MIPSAssembler._current_instructions:
+        #     for i, word

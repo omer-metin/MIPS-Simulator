@@ -8,10 +8,10 @@ DELAY = 0.5     # Can be thought as clock cycle time
 
 sample_assembly = """
     ori $t0, $zero, 5   # a = 5
-    mult $t0, $t0       # temp = a*a
+loop:  mult $t0, $t0       # temp = a*a 
     add $t1, $t1, $lo   # b += temp
     addi $t0, $t0, -1   # a += -1
-    bgtz $t0, -16       # while a>0
+    bgtz $t0, loop       # while a>0
 """
 
 instructions = MIPSAssembler.assembly(sample_assembly)
