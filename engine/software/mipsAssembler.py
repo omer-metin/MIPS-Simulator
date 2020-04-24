@@ -129,8 +129,3 @@ class MIPSAssembler(object):
                     instruction[i] = Registers.getRegister(
                         address.strip('$,)'))
                     instruction.append(int(offset_part))
-
-    # @staticmethod
-    # def _setBranchLocations():
-        # for instruction in MIPSAssembler._current_instructions:
-        #     for i, word
