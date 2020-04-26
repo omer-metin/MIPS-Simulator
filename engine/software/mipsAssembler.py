@@ -14,7 +14,7 @@ class MIPSAssembler(object):
 
     # PUBLIC METHODS #
     @staticmethod
-    def assembly(source: str) -> str:
+    def assembly(source: str, toMachineCode=False) -> str:
         MIPSAssembler._current_instructions = MIPSAssembler._tokenizer(
             source)
         MIPSAssembler._setRegister()
@@ -22,10 +22,10 @@ class MIPSAssembler(object):
         MIPSAssembler._setMemoryLocations()
 
         # FIXME: return before setting opcodes for this state of project
-        return MIPSAssembler._current_instructions[:]
+        if not toMachineCode:
+            return MIPSAssembler._current_instructions[:]
 
         instructions = MIPSAssembler._setOpcodes()
-
         machine_codes = []
         for instruction in instructions:
             machine_codes.append(instruction.toMachineCode())
