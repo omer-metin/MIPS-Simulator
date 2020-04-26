@@ -150,6 +150,12 @@ class BitString(object):
             self._string: np.ndarray = np.array(
                 list('0'*(self._length-len(bin_str)) + bin_str), dtype=np.uint8)
 
+    @property
+    def signedValue(self) -> int:
+        if self._sign >= 0:
+            return self.value
+        return -(2**32 % self.value)
+
     # PUBLIC METHODS #
 
     # PRIVATE METHODS #
