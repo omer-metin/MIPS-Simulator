@@ -200,6 +200,8 @@ class _Instruction(object):
         for i, fraction in enumerate(self.fractions.values()):
             if isinstance(fraction, Register):
                 fraction = fraction.register_id
+            if fraction < 0:
+                fraction = 2**self.field_bit_lengths[i] + fraction
             fraction_bits = bin(fraction)[2:]
             res += '0' * \
                 (self.field_bit_lengths[i]-len(fraction_bits)) + fraction_bits
