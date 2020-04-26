@@ -80,7 +80,7 @@ def fnc_sra(rd: Register, rt: Register, rs_sa):
 
 
 def fnc_sub(rd, rs, rt):
-    val = rs.val - rt.val
+    val = rs.value - rt.value
     rd.setRegisterValue(val)
 
 
