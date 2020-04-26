@@ -3,7 +3,7 @@ from common.types import BitString, Register
 from common.exceptions import NotAllowedError
 
 
-_ram_capacity_in_byte = 2**28  # * 32/8 = 1 GB
+_ram_capacity_in_byte = 2**30  # * 32/8 = 1 GB
 
 
 class Registers(object):
@@ -43,8 +43,9 @@ class Registers(object):
         'r29': _init_registers[29], 'sp': _init_registers[29],
         'r30': _init_registers[30], 'fp': _init_registers[30],
         'r31': _init_registers[31], 'ra': _init_registers[31],
-        'lo': _init_registers[32],  'hi': _init_registers[33],
+        'lo':  _init_registers[32], 'hi': _init_registers[33],
     }
+    _registers['sp'].setRegisterValue(_ram_capacity_in_byte * 4 - 1)
 
     # DUNDERS #
 
