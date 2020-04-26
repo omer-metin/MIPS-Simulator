@@ -10,13 +10,17 @@ class BitString(object):
     # DUNDERS #
     def __init__(self, value=0, length=32):
         super().__init__()
-        self._base10 = value
+        raw_value = value
+        self._sign = 1
         self._length = length
         if not value:
+            self._sign = 0
             self._string: np.ndarray = np.zeros((length,), dtype=np.uint8)
         else:
-            if value < 0:
-                value = 2**length + value
+            value = raw_value % (2**self._length - 1)
+            if raw_value < 0:
+                self._sign = -1
+                value += 1
             bin_str = bin(value)[2:]
             self._string: np.ndarray = np.array(
                 list('0'*(length-len(bin_str)) + bin_str), dtype=np.uint8)
@@ -134,13 +138,14 @@ class BitString(object):
         return int(self.__str__(), base=2)
 
     @value.setter
-    def value(self, value) -> None:
-        if not value:
+    def value(self, raw_value) -> None:
+        if not raw_value:
             self._string: np.ndarray = np.zeros(
                 (self._length,), dtype=np.uint8)
         else:
-            if value < 0:
-                value = 2**self._length + value
+            value = raw_value % (2**self._length - 1)
+            if raw_value < 0:
+                value += 1
             bin_str = bin(value)[2:]
             self._string: np.ndarray = np.array(
                 list('0'*(self._length-len(bin_str)) + bin_str), dtype=np.uint8)
