@@ -103,6 +103,10 @@ class SimMainScreen(QtWidgets.QMainWindow):
         self.actionOpen_File.triggered.connect(self._actionOpen_File_triggered)
 
     # PRIVATE METHODS #
+    def closeEvent(self, event):
+        self._running = False
+        return super().closeEvent(event)
+
     def _actionOpen_File_triggered(self):
         fname, _ = QtWidgets.QFileDialog.getOpenFileName(
             self, "QFileDialog.getOpenFileName", "",
@@ -167,7 +171,13 @@ class SimMainScreen(QtWidgets.QMainWindow):
         cursor.setPosition(0)
         self.machineCodeViewer.setTextCursor(cursor)
         step = Processor.processNext()
-        while step is not None and self._running:
+        while step is not None:
+            if not self._running:
+                self.stopButton.setDisabled(True)
+                self.previousButton.setDisabled(True)
+                self.nextButton.setDisabled(True)
+                return
+
             time.sleep(0.001)
             QtWidgets.QApplication.processEvents()
             if self._next:
