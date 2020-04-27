@@ -121,6 +121,7 @@ class SimMainScreen(QtWidgets.QMainWindow):
         self.stopButton.setDisabled(False)
 
         assembl_text = self.assemblyEditor.toPlainText()
+        cursor: QtGui.QTextCursor = self.machineCodeViewer.textCursor()
         try:
             delay = float(self.delayLineEdit.text())
         except:
@@ -133,16 +134,32 @@ class SimMainScreen(QtWidgets.QMainWindow):
             QtWidgets.QErrorMessage(self).showMessage(str(e))
 
         self._running = True
+        old_pc = 0
+        cursor.setPosition(0)
+        self.machineCodeViewer.setTextCursor(cursor)
         step = Processor.processNext()
-        while step is not None and self._running:
+        while step is not None:
+            if not self._running:
+                break
+
             for _ in range(300):
                 time.sleep(delay/300)
                 QtWidgets.QApplication.processEvents()
             changed_regs, changed_mems = step
             for changed_reg in changed_regs:
-                self._updateRegister(changed_reg)
+                self._updateRegister(changed_reg[0])
             for changed_mem in changed_mems:
-                self._updateMemoryCell(changed_mem)
+                self._updateMemoryCell(changed_mem[0])
+
+            if InstructionMemory.PC-old_pc > 0:
+                cursor.movePosition(QtGui.QTextCursor.Down,
+                                    n=(InstructionMemory.PC-old_pc)//4)
+            elif InstructionMemory.PC-old_pc < 0:
+                cursor.movePosition(QtGui.QTextCursor.Up,
+                                    n=abs(InstructionMemory.PC-old_pc)//4)
+            self.machineCodeViewer.setTextCursor(cursor)
+
+            old_pc = InstructionMemory.PC
             step = Processor.processNext()
         else:
             QtWidgets.QErrorMessage(self).showMessage("Done")
@@ -170,19 +187,15 @@ class SimMainScreen(QtWidgets.QMainWindow):
         old_pc = 0
         cursor.setPosition(0)
         self.machineCodeViewer.setTextCursor(cursor)
-        step = Processor.processNext()
+        step = 1
         while step is not None:
             if not self._running:
-                self.stopButton.setDisabled(True)
-                self.previousButton.setDisabled(True)
-                self.nextButton.setDisabled(True)
-                return
+                break
 
             time.sleep(0.001)
             QtWidgets.QApplication.processEvents()
             if self._next:
                 self._next = False
-                self._backStack.append((old_pc, InstructionMemory.PC, step))
                 if InstructionMemory.PC-old_pc > 0:
                     cursor.movePosition(QtGui.QTextCursor.Down,
                                         n=(InstructionMemory.PC-old_pc)//4)
@@ -190,19 +203,25 @@ class SimMainScreen(QtWidgets.QMainWindow):
                     cursor.movePosition(QtGui.QTextCursor.Up,
                                         n=abs(InstructionMemory.PC-old_pc)//4)
                 self.machineCodeViewer.setTextCursor(cursor)
+
+                old_pc = InstructionMemory.PC
+                step = Processor.processNext()
+                if step is None:
+                    continue
                 changed_regs, changed_mems = step
                 for changed_reg in changed_regs:
                     self._updateRegister(changed_reg[0])
                 for changed_mem in changed_mems:
                     self._updateMemoryCell(changed_mem[0])
-                old_pc = InstructionMemory.PC
-                step = Processor.processNext()
+                self._backStack.append((old_pc, InstructionMemory.PC, step))
 
             if self._prev:
                 self._prev = False
                 try:
                     prev_old_pc, prev_pc, prev_vals = self._backStack.pop()
                 except IndexError as e:
+                    old_pc = 0
+                    InstructionMemory.PC = 0
                     continue
                 if InstructionMemory.PC-prev_pc < 0:
                     cursor.movePosition(QtGui.QTextCursor.Down,
