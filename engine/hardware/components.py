@@ -1,9 +1,9 @@
 import numpy as np
-from common.types import BitString, Register
+
 from common.exceptions import NotAllowedError
+from common.types import BitString, Register
 
-
-_ram_capacity_in_byte = 2**30  # * 32/8 = 1 GB
+_ram_capacity_in_byte = 2**8  # * 32/8 = 1 MB
 
 
 class Registers(object):

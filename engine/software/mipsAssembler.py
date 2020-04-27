@@ -1,6 +1,6 @@
 from common.definitions import *
-from engine.hardware.components import Registers
 from common.types import *
+from engine.hardware.components import Registers
 
 
 class MIPSAssembler(object):
@@ -14,7 +14,7 @@ class MIPSAssembler(object):
 
     # PUBLIC METHODS #
     @staticmethod
-    def assembly(source: str, toMachineCode=False) -> str:
+    def assembly(source: str, toMachineCode=False) -> list:
         MIPSAssembler._current_instructions = MIPSAssembler._tokenizer(
             source)
         MIPSAssembler._setRegister()
