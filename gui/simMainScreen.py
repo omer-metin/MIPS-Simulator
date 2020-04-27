@@ -341,6 +341,8 @@ class SimMainScreen(QtWidgets.QMainWindow):
         Memory.resetMemory()
 
         for address in range(4*len(Memory._memory)):
+            QtWidgets.QApplication.processEvents()
             self._updateMemoryCell(address)
         for idx in range(34):
+            QtWidgets.QApplication.processEvents()
             self._updateRegister(idx)
