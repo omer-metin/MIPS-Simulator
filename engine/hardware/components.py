@@ -3,7 +3,7 @@ import numpy as np
 from common.exceptions import NotAllowedError
 from common.types import BitString, Register
 
-_ram_capacity_in_byte = 2**8  # * 32/8 = 1 MB
+_ram_capacity_in_byte = 2**10  # * 32/8 = 1 MB
 
 
 class Registers(object):
@@ -45,7 +45,7 @@ class Registers(object):
         'r31': _init_registers[31], 'ra': _init_registers[31],
         'lo':  _init_registers[32], 'hi': _init_registers[33],
     }
-    _registers['sp'].setRegisterValue(_ram_capacity_in_byte * 4 - 1)
+    _registers['sp'].setRegisterValue(_ram_capacity_in_byte * 4)
 
     # DUNDERS #
 
@@ -57,6 +57,13 @@ class Registers(object):
         if isinstance(register_id, int):
             return Registers._init_registers[register_id]
         return Registers._registers[register_id]
+
+    @staticmethod
+    def resetRegisters():
+        for register in Registers._init_registers:
+            register.setRegisterValue(0)
+        Registers._registers['sp'].setRegisterValue(
+            _ram_capacity_in_byte * 4)
 
     # PRIVATE METHODS #
 
@@ -73,7 +80,7 @@ class Memory(object):
     # PUBLIC METHODS #
     @staticmethod
     def loadByte(address, offset=0) -> int:
-        primary_index = (address + offset) // 4
+        primary_index = ((address + offset) // 4) % _ram_capacity_in_byte
         secondary_index = (address + offset) % 4
 
         word = BitString(Memory._memory[primary_index])
@@ -82,7 +89,7 @@ class Memory(object):
 
     @staticmethod
     def storeByte(address, offset=0, value=0):
-        primary_index = (address + offset) // 4
+        primary_index = ((address + offset) // 4) % _ram_capacity_in_byte
         secondary_index = (address + offset) % 4
 
         word = BitString(Memory._memory[primary_index])
@@ -117,6 +124,10 @@ class Memory(object):
         Memory.storeByte(address, offset+2, adding_string[16:24].value)
         Memory.storeByte(address, offset+3, adding_string[24:].value)
 
+    @staticmethod
+    def resetMemory():
+        Memory._memory = np.zeros((_ram_capacity_in_byte,), dtype=np.uint32)
+
     # PRIVATE METHODS #
 
 
@@ -134,6 +145,7 @@ class InstructionMemory(object):
     @staticmethod
     def load_instructions(instructions: list):
         InstructionMemory._instructions = instructions[:]
+        InstructionMemory.PC = 0
 
     @staticmethod
     def next_instruction() -> list:

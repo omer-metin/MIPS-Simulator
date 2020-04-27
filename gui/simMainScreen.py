@@ -439,6 +439,8 @@ class SimMainScreen(QtWidgets.QMainWindow):
     # STATIC VARIABLES #
     _running = False
     _next = False
+    _prev = False
+    _backStack = []
 
     # DUNDERS #
     def __init__(self, parent=None):
@@ -527,12 +529,14 @@ class SimMainScreen(QtWidgets.QMainWindow):
     # PRIVATE METHODS #
     def _actionOpen_File_triggered(self):
         fname, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "QFileDialog.getOpenFileName", "", "All Files (*);;Assembly Files (*.s)")
+            self, "QFileDialog.getOpenFileName", "",
+            "All Files (*);;Assembly Files (*.s)")
         if fname:
             with open(fname, 'r') as f:
                 self.assemblyEditor.setPlainText(f.read())
 
     def _runButton_clicked(self):
+        self._resetDebugger()
         self.pauseButton.setDisabled(False)
         self.stopButton.setDisabled(False)
 
@@ -568,7 +572,7 @@ class SimMainScreen(QtWidgets.QMainWindow):
         self.stopButton.setDisabled(True)
 
     def _debugButton_clicked(self):
-        self.pauseButton.setDisabled(False)
+        self._resetDebugger()
         self.stopButton.setDisabled(False)
         self.previousButton.setDisabled(False)
         self.nextButton.setDisabled(False)
@@ -591,6 +595,8 @@ class SimMainScreen(QtWidgets.QMainWindow):
             time.sleep(0.001)
             QtWidgets.QApplication.processEvents()
             if self._next:
+                self._next = False
+                self._backStack.append((old_pc, InstructionMemory.PC, step))
                 if InstructionMemory.PC-old_pc > 0:
                     cursor.movePosition(QtGui.QTextCursor.Down,
                                         n=(InstructionMemory.PC-old_pc)//4)
@@ -598,19 +604,40 @@ class SimMainScreen(QtWidgets.QMainWindow):
                     cursor.movePosition(QtGui.QTextCursor.Up,
                                         n=abs(InstructionMemory.PC-old_pc)//4)
                 self.machineCodeViewer.setTextCursor(cursor)
-                self._next = False
                 changed_regs, changed_mems = step
                 for changed_reg in changed_regs:
-                    self._updateRegister(changed_reg)
+                    self._updateRegister(changed_reg[0])
                 for changed_mem in changed_mems:
-                    self._updateMemoryCell(changed_mem)
+                    self._updateMemoryCell(changed_mem[0])
                 old_pc = InstructionMemory.PC
                 step = Processor.processNext()
+
+            if self._prev:
+                self._prev = False
+                try:
+                    prev_old_pc, prev_pc, prev_vals = self._backStack.pop()
+                except IndexError as e:
+                    continue
+                if InstructionMemory.PC-prev_pc < 0:
+                    cursor.movePosition(QtGui.QTextCursor.Down,
+                                        n=abs(InstructionMemory.PC-prev_pc)//4)
+                elif InstructionMemory.PC-prev_pc > 0:
+                    cursor.movePosition(QtGui.QTextCursor.Up,
+                                        n=(InstructionMemory.PC-prev_pc)//4)
+                self.machineCodeViewer.setTextCursor(cursor)
+
+                InstructionMemory.PC = prev_pc
+                old_pc = prev_old_pc
+                regs, mems = prev_vals
+                for reg_idx, reg_val in regs:
+                    self._reverseRegister(reg_idx, reg_val)
+                for mem_adr, mem_val in mems:
+                    self._reverseMemory(mem_adr, mem_val)
+
         else:
             QtWidgets.QErrorMessage(self).showMessage("Done")
 
         self._running = False
-        self.pauseButton.setDisabled(True)
         self.stopButton.setDisabled(True)
         self.previousButton.setDisabled(True)
         self.nextButton.setDisabled(True)
@@ -622,7 +649,7 @@ class SimMainScreen(QtWidgets.QMainWindow):
         self._running = False
 
     def _previousButton_clicked(self):
-        return
+        self._prev = True
 
     def _nextButton_clicked(self):
         self._next = True
@@ -713,3 +740,31 @@ class SimMainScreen(QtWidgets.QMainWindow):
                 str(Registers.getRegister(f"r{reg_idx-1}").value))
             item.setTextAlignment(QtCore.Qt.AlignHCenter)
             self.registersTableWidget_2.setItem(reg_idx % 17, 2, item)
+
+    def _reverseMemory(self, address, val):
+        Memory.storeByte(address, offset=0, value=val)
+        self._updateMemoryCell(address)
+
+    def _reverseRegister(self, reg_idx, val):
+        if reg_idx < 16:
+            Registers.getRegister(f"r{reg_idx}").setRegisterValue(val)
+        elif reg_idx == 16:
+            Registers.getRegister("hi").setRegisterValue(val)
+        elif reg_idx == 33:
+            Registers.getRegister("lo").setRegisterValue(val)
+        else:
+            Registers.getRegister(f"r{reg_idx-1}").setRegisterValue(val)
+        self._updateRegister(reg_idx)
+
+    def _resetDebugger(self):
+        self.previousButton.setDisabled(True)
+        self.nextButton.setDisabled(True)
+        self.stopButton.setDisabled(True)
+        self.pauseButton.setDisabled(True)
+        Registers.resetRegisters()
+        Memory.resetMemory()
+
+        for address in range(4*len(Memory._memory)):
+            self._updateMemoryCell(address)
+        for idx in range(34):
+            self._updateRegister(idx)

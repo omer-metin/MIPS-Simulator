@@ -5,29 +5,34 @@ from engine.hardware.components import InstructionMemory, Memory, Registers
 
 def fnc_add(rd: Register, rs: Register, rt: Register):
     val = rs.value + rt.value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_and(rd: Register, rs: Register, rt: Register):
     val = (rs & rt).value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_div(rs, rt):
     val_lo = rs.value // rt.value
     val_hi = rs.value % rt.value
+    lo_old = Registers.getRegister('lo').signedValue
+    hi_old = Registers.getRegister('hi').signedValue
     Registers.getRegister('hi').setRegisterValue(val_hi)
     Registers.getRegister('lo').setRegisterValue(val_lo)
-    return ([Registers.getRegister('hi').register_id,
-             Registers.getRegister('lo').register_id], [])
+    return ([(Registers.getRegister('hi').register_id, hi_old),
+             (Registers.getRegister('lo').register_id, lo_old)], [])
 
 
 def fnc_jalr(rd: Register, rs: Register):
+    rd_old = rd.signedValue
     rd.setRegisterValue(InstructionMemory.PC+4)
     InstructionMemory.PC = rs.value
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_jr(rs: Register):
@@ -36,89 +41,103 @@ def fnc_jr(rs: Register):
 
 
 def fnc_mfhi(rd: Register):
+    rd_old = rd.signedValue
     rd.setRegisterValue(Registers.getRegister('hi').value)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_mflo(rd: Register):
+    rd_old = rd.signedValue
     rd.setRegisterValue(Registers.getRegister('lo').value)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_mthi(rs: Register):
+    hi_old = Registers.getRegister('hi').signedValue
     Registers.getRegister('hi').setRegisterValue(rs.value)
-    return ([Registers.getRegister('hi').register_id], [])
+    return ([(Registers.getRegister('hi').register_id, hi_old)], [])
 
 
 def fnc_mtlo(rs: Register):
+    lo_old = Registers.getRegister('lo').signedValue
     Registers.getRegister('lo').setRegisterValue(rs.value)
-    return ([Registers.getRegister('lo').register_id], [])
+    return ([(Registers.getRegister('lo').register_id, lo_old)], [])
 
 
 def fnc_mult(rd: Register, rs: Register):
     val = rd.value * rs.value
     val_bit_str = BitString(val, length=64)
+    lo_old = Registers.getRegister('lo').signedValue
+    hi_old = Registers.getRegister('hi').signedValue
     Registers.getRegister('hi').setRegisterValue(val_bit_str[:32].value)
     Registers.getRegister('lo').setRegisterValue(val_bit_str[32:].value)
-    return ([Registers.getRegister('hi').register_id,
-             Registers.getRegister('lo').register_id], [])
+    return ([(Registers.getRegister('hi').register_id, hi_old),
+             (Registers.getRegister('lo').register_id, lo_old)], [])
 
 
 def fnc_nor(rd: Register, rs: Register, rt: Register):
     val = 2**len(rd) - (rs.value | rt.value)
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([Registers.getRegister('hi').register_id,
-             Registers.getRegister('lo').register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_or(rd: Register, rs: Register, rt: Register):
     val = rs.value | rt.value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_sll(rd: Register, rt: Register, rs_sa):
     sa = rs_sa.value if isinstance(rs_sa, Register) else rs_sa
     val = (rt << sa).value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_slt(rd: Register, rs: Register, rt: Register):
     val = 1 if rs.value < rt.value else 0
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_sra(rd: Register, rt: Register, rs_sa):
     sa = rs_sa.value if isinstance(rs_sa, Register) else rs_sa
     val = (rt >> sa).value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_sub(rd, rs, rt):
     val = rs.value - rt.value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_xor(rd: Register, rs: Register, rt: Register):
     val = rs.value ^ rt.value
+    rd_old = rd.signedValue
     rd.setRegisterValue(val)
-    return ([rd.register_id], [])
+    return ([(rd.register_id, rd_old)], [])
 
 
 def fnc_addi(rt: Register, rs: Register, imm):
     val = rs.value + imm
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_andi(rt: Register, rs: Register, imm):
     val = rs.value & imm
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_beq(rs: Register, rt: Register, imm):
@@ -161,77 +180,93 @@ def fnc_lb(rt: Register, rs: Register, imm):
     val = Memory.loadByte(rs.value, offset=imm)
     if val >= 2**7:
         val = 2**len(rt) - (2**8 - val)
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_lbu(rt: Register, rs: Register, imm):
     val = Memory.loadByte(rs.value, offset=imm)
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_lh(rt: Register, rs: Register, imm):
     val = Memory.loadHalfWord(rs.value, offset=imm)
     if val >= 2**15:
         val = 2**len(rt) - (2**16 - val)
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_lhu(rt: Register, rs: Register, imm):
     val = Memory.loadHalfWord(rs.value, offset=imm)
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_lui(rt: Register, imm):
     val = BitString(imm) << 16
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_lw(rt: Register, rs: Register, imm):
     val = Memory.loadWord(rs.value, offset=imm)
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_ori(rt: Register, rs: Register, imm):
     val = rs.value | imm
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_sb(rt: Register, rs: Register, imm):
     val = rt[24:].value
+    mem_old = Memory.loadByte(rs.value, offset=imm)
     Memory.storeByte(rs.value, offset=imm, value=val)
-    return ([], [rs.value + imm])
+    return ([], [(rs.value + imm, mem_old)])
 
 
 def fnc_slti(rt: Register, rs: Register, imm):
     val = 1 if rs.value < imm else 0
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_sh(rt: Register, rs: Register, imm):
     val = rt[16:].value
+    mem1_old = Memory.loadByte(rs.value, offset=imm)
+    mem2_old = Memory.loadByte(rs.value, offset=imm+1)
     Memory.storeHalfWord(rs.value, offset=imm, value=val)
-    return ([], [rs.value + imm, rs.value + imm + 1])
+    return ([], [(rs.value + imm, mem1_old), (rs.value + imm + 1, mem2_old)])
 
 
 def fnc_sw(rt: Register, rs: Register, imm):
     val = rt.value
+    mem1_old = Memory.loadByte(rs.value, offset=imm)
+    mem2_old = Memory.loadByte(rs.value, offset=imm+1)
+    mem3_old = Memory.loadByte(rs.value, offset=imm+2)
+    mem4_old = Memory.loadByte(rs.value, offset=imm+3)
     Memory.storeWord(rs.value, offset=imm, value=val)
-    return ([], [rs.value + imm, rs.value + imm + 1,
-                 rs.value + imm + 2, rs.value + imm + 3])
+    return ([], [(rs.value + imm, mem1_old), (rs.value + imm + 1, mem2_old),
+                 (rs.value + imm + 2, mem3_old), (rs.value + imm + 3, mem4_old)])
 
 
 def fnc_xori(rt: Register, rs: Register, imm):
     val = rs.value ^ imm
+    rt_old = rt.signedValue
     rt.setRegisterValue(val)
-    return ([rt.register_id], [])
+    return ([(rt.register_id, rt_old)], [])
 
 
 def fnc_j(tgt):
@@ -240,9 +275,10 @@ def fnc_j(tgt):
 
 
 def fnc_jal(tgt):
+    ra_old = Registers.getRegister('ra').signedValue
     Registers.getRegister('ra').setRegisterValue(InstructionMemory.PC+4)
     InstructionMemory.PC = tgt
-    return ([Registers.getRegister('ra').register_id], [])
+    return ([(Registers.getRegister('ra').register_id, ra_old)], [])
 
 
 instruction_functions = {
