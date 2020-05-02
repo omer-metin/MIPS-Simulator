@@ -17,8 +17,9 @@ class BitString(object):
             self._sign = 0
             self._string: np.ndarray = np.zeros((length,), dtype=np.uint8)
         else:
-            value = raw_value % (2**self._length - 1)
+            value = raw_value % 2**self._length
             if raw_value < 0:
+                value = raw_value % (2**self._length - 1)
                 self._sign = -1
                 value += 1
             bin_str = bin(value)[2:]
@@ -140,11 +141,14 @@ class BitString(object):
     @value.setter
     def value(self, raw_value) -> None:
         if not raw_value:
+            self._sign = 0
             self._string: np.ndarray = np.zeros(
                 (self._length,), dtype=np.uint8)
         else:
+            self._sign = 1
             value = raw_value % (2**self._length - 1)
             if raw_value < 0:
+                self._sign = -1
                 value += 1
             bin_str = bin(value)[2:]
             self._string: np.ndarray = np.array(
