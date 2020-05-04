@@ -50,19 +50,26 @@ class MIPSAssembler(object):
                 lines.append(line)
 
         blocks = {}
+        for idx, line in enumerate(lines):
+            if line.find(':') >= 0:
+                blocks[line[:-1]] = idx - len(blocks)
 
         words = []
         for idx, line in enumerate(lines):
             if line.find(':') >= 0:
-                blocks[line[:-1]] = idx - len(blocks)
                 continue
 
             line_words = []
-            for raw_word in line.split():
+            splitted_line = line.split()
+            for idx2, raw_word in enumerate(splitted_line):
                 if len(raw_word) > 0:
                     if raw_word in blocks:
-                        line_words.append(
-                            str((blocks[raw_word] - idx + len(blocks) - 1)*4))
+                        if splitted_line[idx2 - 1].startswith('j'):
+                            line_words.append(
+                                str((blocks[raw_word])*4))
+                        else:
+                            line_words.append(
+                                str((blocks[raw_word] - idx + len(blocks) - 1)*4))
                     else:
                         line_words.append(raw_word)
 

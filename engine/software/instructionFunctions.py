@@ -30,7 +30,7 @@ def fnc_div(rs, rt):
 
 def fnc_jalr(rd: Register, rs: Register):
     rd_old = rd.signedValue
-    rd.setRegisterValue(InstructionMemory.PC+4)
+    rd.setRegisterValue(InstructionMemory.PC)
     InstructionMemory.PC = rs.value
     return ([(rd.register_id, rd_old)], [])
 
@@ -276,7 +276,7 @@ def fnc_j(tgt):
 
 def fnc_jal(tgt):
     ra_old = Registers.getRegister('ra').signedValue
-    Registers.getRegister('ra').setRegisterValue(InstructionMemory.PC+4)
+    Registers.getRegister('ra').setRegisterValue(InstructionMemory.PC)
     InstructionMemory.PC = tgt
     return ([(Registers.getRegister('ra').register_id, ra_old)], [])
 
